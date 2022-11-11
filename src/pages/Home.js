@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import TextField from '@material-ui/core/TextField';
 import { Container,Paper,Button } from '@material-ui/core'
+import Grid from '@mui/material/Grid';
 
-const useStyles = makeStyles((theme) => ({
+
+const useStyles = styled((theme) => ({
     root: {
         '& > *': {
             margin: theme.spacing(1)
@@ -11,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Student() {
+export default function Home() {
     const classes = useStyles();
     const paperStyle = {padding: '50px 20px', width:"600", margin:'20px auto'};
     const [name,setName]=useState('');
@@ -38,17 +40,46 @@ export default function Student() {
                 });       
     });
 
+    const Item = styled(Paper)(({ theme }) => ({
+        backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+        ...theme.typography.body2,
+        padding: theme.spacing(1),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+      }));
+
   return (
 
     <Container>
+        <h1>
+            RoomChecker
+        </h1>
+        <h3>Todays Actions</h3>
+
         <Paper elevation={3} style={paperStyle}>
-            <h1>
-                RoomChecker
-            </h1>
+            <Grid container rowSpacing={1} columnSpacing={2} columns={6} justifyContent="center">
+                <Grid item xs={2}>
+                    <Item>Arrivals</Item>
+                </Grid>
+                <Grid item xs={2}>
+                    <Item>Departures</Item>
+                </Grid>
+            </Grid>
+            {students.map(student=>(
+                <Paper elevation={6} style={{margin:'10px',padding:'15px',textAlgign:'left'}} key={student.id}>
+                    Id: {student.id} <br/>
+                    Name: {student.name} <br/>
+                    Address: {student.address}
+                </Paper>
+            ))}
+        </Paper>
+
+        <Paper elevation={3} style={paperStyle}>
             <form className={classes.root}
             noValidate
             autoComplete="off"
             >
+                Check Availability
                 <TextField id="outlined-basic" label="Student Name" variant="outlined" fullWidth 
                         value={name}
                         onChange={(e)=>setName(e.target.value)}/>
@@ -60,18 +91,6 @@ export default function Student() {
                 </Button>
             </form>
         </Paper> 
-
-        <h1>Students</h1>
-
-        <Paper elevation={3} style={paperStyle}>
-            {students.map(student=>(
-                <Paper elevation={6} style={{margin:'10px',padding:'15px',textAlgign:'left'}} key={student.id}>
-                    Id: {student.id} <br/>
-                    Name: {student.name} <br/>
-                    Address: {student.address}
-                </Paper>
-            ))}
-        </Paper>
     </Container>
   );
 }
